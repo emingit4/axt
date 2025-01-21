@@ -90,10 +90,6 @@ async def main():
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("axtar", axtar))  # /axtar komandasını əlavə et
 
-    # PyTgCalls-u işə salmaq üçün event loop
-    await client.start()  # Burada indentasiya düzgün olmalıdır
-    pytgcalls.start()
-
     # Botu başladın
     await application.run_polling()
 
