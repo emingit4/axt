@@ -1,11 +1,13 @@
+from telethon.sessions import StringSession
+from telethon import TelegramClient
 from telegram import Update
-from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackContext
+from telegram.ext import Application, CommandHandler, CallbackContext
 from googleapiclient.discovery import build
 from yt_dlp import YoutubeDL
 from pytgcalls import PyTgCalls
-from telethon import TelegramClient
 import asyncio
-from pytgcalls.types import MediaStream
+from pytgcalls.types import MediaStream, InputStream
+from pytgcalls.types.input_stream import RemoteFile
 
 # Telegram API məlumatları
 API_ID = '17790748'
@@ -18,8 +20,11 @@ API_KEY = 'AIzaSyAtmngrhhfmWL4_KvY1wUg3q4BXtUpNHAQ'
 # YouTube servisini qurmaq
 youtube = build('youtube', 'v3', developerKey=API_KEY)
 
+# StringSession ilə sessiyanı daxil edirik
+SESSION_STRING = 'AQEPdxwANek-BHKHo9gyfx1SC6Ly7OZmQYOhhbnMzANRVNn9qtk7SWB848fkXS5M0r3z-sPMZdEHhCqajUExfMFj7O6b1eqfO9eOI-GVMuw9QhRQ-DSuXLSkYPm9D-xJrywc69yfn2Ye1spd9JG99trjEXP8jtgIRWPVuMsn1o4B6aj0-CGvlXcpjkKheXcp55n55dANrHKbbDOn8XcokFbTAKAsY-efV4Fskyds6YLvPKUva7ZJT015y032RD9WKZySxI9NS4sgY6Va0-agu5fXAmdanNr4A2T72gj6rNfS9TKaDQy3oerz9VXupJQKdZkYKJpsQyEfonoxDcYDlt7w3su_UgAAAAE0nS3uAA'
+
 # Telegram client və PyTgCalls qur
-client = TelegramClient("userbot", API_ID, API_HASH)
+client = TelegramClient(StringSession(SESSION_STRING), API_ID, API_HASH)
 pytgcalls = PyTgCalls(client)
 
 # YouTube axtarış funksiyası
@@ -88,7 +93,7 @@ def main():
 
     # PyTgCalls-u işə salmaq üçün event loop
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(client.start())
+    loop.run_until_complete(client.start())  # Burada session üçün `client.start()` çağırılır
     pytgcalls.start()
 
     # Botu başladın
