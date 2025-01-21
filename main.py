@@ -7,6 +7,8 @@ from googleapiclient.discovery import build
 from yt_dlp import YoutubeDL
 from pytgcalls import PyTgCalls
 from pytgcalls.types import MediaStream
+from pytgcalls import PyTgCalls
+from pytgcalls.types import RemoteFile
 import asyncio
 
 # Logging konfiqurasiya
@@ -97,9 +99,7 @@ async def main():
 
     # Botu başladın
     await application.initialize()
-    await application.start()
-    await application.updater.start_polling()
-    await application.run_polling()  # Tətbiqin davamlı işləməsini təmin edin
+    await application.start_polling()
 
 if __name__ == '__main__':
     try:
