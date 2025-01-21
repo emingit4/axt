@@ -98,7 +98,7 @@ async def main():
 
     # Botu başladın
     await application.initialize()
-    await application.start_polling()
+    await application.run_polling()
 
 if __name__ == '__main__':
     try:
