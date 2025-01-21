@@ -1,0 +1,7 @@
+python-telegram-bot==20.3
+google-api-python-client==2.92.0
+yt-dlp==2023.7.6
+telethon==1.30.0
+pytgcalls==3.0.0.dev5
+pytz==2023.3
+apscheduler==3.10.4
