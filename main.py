@@ -1,3 +1,4 @@
+import base64
 from telethon.sessions import StringSession
 from telethon import TelegramClient
 from telegram import Update
@@ -7,6 +8,10 @@ from yt_dlp import YoutubeDL
 from pytgcalls import PyTgCalls
 from pytgcalls.types import MediaStream
 import asyncio
+import logging
+
+# Logging konfiqurasiya
+logging.basicConfig(level=logging.INFO)
 
 # Telegram API məlumatları
 API_ID = '17790748'
@@ -81,6 +86,7 @@ async def axtar(update: Update, context: CallbackContext) -> None:
 
     except Exception as e:
         await update.message.reply_text(f"Xəta baş verdi: {e}")
+        logging.error(f"Error in axtar command: {e}")
 
 # Botu işə sal
 async def main():
@@ -97,4 +103,7 @@ async def main():
     await application.stop()
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except Exception as e:
+        logging.error(f"Error running the bot: {e}")
