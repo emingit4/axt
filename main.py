@@ -91,12 +91,8 @@ def main():
     application.add_handler(CommandHandler("axtar", axtar))  # /axtar komandasını əlavə et
 
     # PyTgCalls-u işə salmaq üçün event loop
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(client.start())  # Burada session üçün `client.start()` çağırılır
-    pytgcalls.start()
-
-    # Botu başladın
-    application.run_polling()
+    async def main():
+    await client.start()  # `await` istifadə edərək `client.start()` metodunu birbaşa çağırırıq
 
 if __name__ == '__main__':
-    main()
+    asyncio.run(main())  # asyncio.run() ilə coroutine işə salınır
