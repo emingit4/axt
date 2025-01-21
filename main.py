@@ -91,9 +91,9 @@ def main():
     application.add_handler(CommandHandler("axtar", axtar))  # /axtar komandasını əlavə et
 
     # PyTgCalls-u işə salmaq üçün event loop
-    async def main():
-    await client.start()  # Bu xəttin indentasiya doğru olmalıdır
-    print("Bot başladıldı!")
+async def main():
+    await client.start()  # Burada indentasiya düzgün olmalıdır
+    print("Bot başladı!")
 
 if __name__ == '__main__':
     asyncio.run(main())  # Bu hissədə də indentasiya düzgün olmalıdır
