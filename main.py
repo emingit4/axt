@@ -83,7 +83,7 @@ async def axtar(update: Update, context: CallbackContext) -> None:
         await update.message.reply_text(f"Xəta baş verdi: {e}")
 
 # Botu işə sal
-def main():
+async def main():
     application = Application.builder().token(BOT_TOKEN).build()
 
     # Komanda və mesaj emalçılar
@@ -91,9 +91,11 @@ def main():
     application.add_handler(CommandHandler("axtar", axtar))  # /axtar komandasını əlavə et
 
     # PyTgCalls-u işə salmaq üçün event loop
-async def main():
     await client.start()  # Burada indentasiya düzgün olmalıdır
-    print("Bot başladı!")
+    pytgcalls.start()
+
+    # Botu başladın
+    await application.run_polling()
 
 if __name__ == '__main__':
     asyncio.run(main())  # Bu hissədə də indentasiya düzgün olmalıdır
