@@ -6,7 +6,7 @@ from googleapiclient.discovery import build
 from yt_dlp import YoutubeDL
 from pytgcalls import PyTgCalls
 import asyncio
-from pytgcalls.types import MediaStream, InputStream
+from pytgcalls.types import MediaStream
 from pytgcalls.types.input_stream import RemoteFile
 
 # Telegram API məlumatları
