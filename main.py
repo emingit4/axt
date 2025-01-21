@@ -21,7 +21,7 @@ API_KEY = 'AIzaSyAtmngrhhfmWL4_KvY1wUg3q4BXtUpNHAQ'
 youtube = build('youtube', 'v3', developerKey=API_KEY)
 
 # StringSession ilə sessiyanı daxil edirik
-SESSION_STRING = '1AZWarzMBuwKqfRrlUjr3Y-GNp8RJ32kaVMbiL87oIVBe-LnwJ-cgp-6GM26fNp0WMxpTdq1eAZVZgxMe6QEmiBggCahxMl35RjwKeHFoCBwb_6oENh4TNaAi7l97Oigjhpg1LoQEdTnWEF-k1eDA3O5gic9qkeQgWSgoWJ6ft8bSEzvw0[...]'
+SESSION_STRING = '1AZWarzMBuwKqfRrlUjr3Y-GNp8RJ32kaVMbiL87oIVBe-LnwJ-cgp-6GM26fNp0WMxpTdq1eAZVZgxMe6QEmiBggCahxMl35RjwKeHFoCBwb_6oENh4TNaAi7l97Oigjhpg1LoQEdTnWEF-k1eDA3O5gic9qkeQgWSgoWJ6ft8bSEzvw0deqBF57YAIkChIGlGxV_vceTqw_r5bmm_OvZlyTHEwBgMrRNSs7pOuDFsQkBq5JKOTMU_AcuYdTT8Mun0T0cUwQpfbe6Y6XfLxy3B_iRPGV1di5pDE6lngPk8UO4RRQvAAJakcMmERBnBx0GXkNbgSX7aESraPQjmZ9mLyu1qg2Ncs='
 
 # Base64 stringin düzgün olub olmadığını yoxlayın
 def is_base64(sb):
