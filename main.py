@@ -91,7 +91,8 @@ async def main():
     application.add_handler(CommandHandler("axtar", axtar))  # /axtar komandasını əlavə et
 
     # Botu başladın
+    await application.initialize()
     await application.run_polling()
 
 if __name__ == '__main__':
-    asyncio.run(main())  # Bu hissədə də indentasiya düzgün olmalıdır
+    asyncio.run(main())
