@@ -3,10 +3,11 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 from googleapiclient.discovery import build
 from yt_dlp import YoutubeDL
 from pytgcalls import PyTgCalls
-from pytgcalls.types.input_stream import InputStream
 from pytgcalls.types.input_stream.remote_file import RemoteFile
 from telethon import TelegramClient
 import asyncio
+from pytgcalls.types.stream.input_stream import InputStream
+
 
 # Telegram API məlumatları
 API_ID = '17790748'
