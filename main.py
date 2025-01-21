@@ -6,7 +6,6 @@ from pytgcalls import PyTgCalls
 from telethon import TelegramClient
 import asyncio
 from pytgcalls.types import MediaStream
-from pytgcalls.types.stream import AudioStream
 
 # Telegram API məlumatları
 API_ID = '17790748'
