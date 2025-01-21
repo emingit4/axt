@@ -92,7 +92,8 @@ def main():
 
     # PyTgCalls-u işə salmaq üçün event loop
     async def main():
-    await client.start()  # `await` istifadə edərək `client.start()` metodunu birbaşa çağırırıq
+    await client.start()  # Bu xəttin indentasiya doğru olmalıdır
+    print("Bot başladıldı!")
 
 if __name__ == '__main__':
-    asyncio.run(main())  # asyncio.run() ilə coroutine işə salınır
+    asyncio.run(main())  # Bu hissədə də indentasiya düzgün olmalıdır
