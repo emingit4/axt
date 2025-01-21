@@ -1,4 +1,4 @@
-import asyncio
+import base64
 from telethon.sessions import StringSession
 from telethon import TelegramClient
 from telegram import Update
@@ -7,6 +7,7 @@ from googleapiclient.discovery import build
 from yt_dlp import YoutubeDL
 from pytgcalls import PyTgCalls
 from pytgcalls.types import MediaStream
+import asyncio
 
 # Telegram API məlumatları
 API_ID = '17790748'
@@ -20,7 +21,20 @@ API_KEY = 'AIzaSyAtmngrhhfmWL4_KvY1wUg3q4BXtUpNHAQ'
 youtube = build('youtube', 'v3', developerKey=API_KEY)
 
 # StringSession ilə sessiyanı daxil edirik
-SESSION_STRING = '1AZWarzMBuwKqfRrlUjr3Y-GNp8RJ32kaVMbiL87oIVBe-LnwJ-cgp-6GM26fNp0WMxpTdq1eAZVZgxMe6QEmiBggCahxMl35RjwKeHFoCBwb_6oENh4TNaAi7l97Oigjhpg1LoQEdTnWEF-k1eDA3O5gic9qkeQgWSgoWJ6ft8bSEzvw0[...'
+SESSION_STRING = '1AZWarzMBuwKqfRrlUjr3Y-GNp8RJ32kaVMbiL87oIVBe-LnwJ-cgp-6GM26fNp0WMxpTdq1eAZVZgxMe6QEmiBggCahxMl35RjwKeHFoCBwb_6oENh4TNaAi7l97Oigjhpg1LoQEdTnWEF-k1eDA3O5gic9qkeQgWSgoWJ6ft8bSEzvw0[...]'
+
+# Base64 stringin düzgün olub olmadığını yoxlayın
+def is_base64(sb):
+    try:
+        if isinstance(sb, str):
+            # If the string is in string format, convert to bytes
+            sb = sb.encode('utf-8')
+        return base64.urlsafe_b64decode(sb).decode('utf-8')
+    except Exception:
+        return False
+
+if not is_base64(SESSION_STRING):
+    raise ValueError("Invalid base64 string for SESSION_STRING")
 
 # Telegram client və PyTgCalls qur
 client = TelegramClient(StringSession(SESSION_STRING), API_ID, API_HASH)
