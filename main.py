@@ -5,7 +5,7 @@ from yt_dlp import YoutubeDL
 from pytgcalls import PyTgCalls
 from telethon import TelegramClient
 import asyncio
-from pytgcalls.types import InputStream
+from pytgcalls.types import MediaStream
 from pytgcalls.types.stream import FileAudio
 
 # Telegram API məlumatları
