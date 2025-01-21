@@ -8,7 +8,6 @@ from yt_dlp import YoutubeDL
 from pytgcalls import PyTgCalls
 from pytgcalls.types import MediaStream
 from pytgcalls import PyTgCalls
-from pytgcalls.types import RemoteFile
 import asyncio
 
 # Logging konfiqurasiya
