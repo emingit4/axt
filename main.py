@@ -1,4 +1,4 @@
-import base64
+import logging
 from telethon.sessions import StringSession
 from telethon import TelegramClient
 from telegram import Update
@@ -8,7 +8,6 @@ from yt_dlp import YoutubeDL
 from pytgcalls import PyTgCalls
 from pytgcalls.types import MediaStream
 import asyncio
-import logging
 
 # Logging konfiqurasiya
 logging.basicConfig(level=logging.INFO)
