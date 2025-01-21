@@ -1,4 +1,3 @@
-import base64
 from telethon.sessions import StringSession
 from telethon import TelegramClient
 from telegram import Update
@@ -22,19 +21,6 @@ youtube = build('youtube', 'v3', developerKey=API_KEY)
 
 # StringSession ilə sessiyanı daxil edirik
 SESSION_STRING = '1AZWarzcBuxvBKhZqG9BycE2VUj3T4McWWipAhHscj7cbjAcTtRG2GUEfywh6MgiIT7SiJgL0SsQpr5Pzp1aS5vDUUr6TwC1wEWLq5wTfTioU6Jg-RMMOF1vpl0sXtq7qcDRdnnwz6QiZ1sXjcRefpav2MCIB40aJYYsob-u17ubfLrUYoJ-C6Wbd45WJ9_CZQdOyTGVWOQlFfAcCrgLq8hVj7isa2EdjwCHOcFYOXqBEqKT1H7zbCGLGnFUo76CdZLytgRIt-7ecSurhvHCksAEoKxLqUcSBGt64t0_-ZBJlOgf4DIGYih9l2CmQay0s-0kMLliOoYd6lhN0Ebo4gxi5NKDwIX4='
-
-# Base64 stringin düzgün olub olmadığını yoxlayın
-def is_base64(sb):
-    try:
-        if isinstance(sb, str):
-            # If the string is in string format, convert to bytes
-            sb = sb.encode('utf-8')
-        return base64.urlsafe_b64decode(sb).decode('utf-8')
-    except Exception:
-        return False
-
-if not is_base64(SESSION_STRING):
-    raise ValueError("Invalid base64 string for SESSION_STRING")
 
 # Telegram client və PyTgCalls qur
 client = TelegramClient(StringSession(SESSION_STRING), API_ID, API_HASH)
