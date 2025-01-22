@@ -38,8 +38,8 @@ def search_youtube(query):
 def download_audio(video_id):
     video_url = f"https://www.youtube.com/watch?v={video_id}"
     ydl_opts = {
-        'format': 'bestaudio/best',  # Audio üçün ən yaxşı formatı seç
-        'outtmpl': 'downloads/%(id)s.%(ext)s',  # Yüklənmiş faylın adı və yolunu müəyyən et
+        'format': 'bestaudio/best',
+        'outtmpl': 'downloads/%(id)s.%(ext)s',
     }
     with YoutubeDL(ydl_opts) as ydl:
         info_dict = ydl.extract_info(video_url, download=True)
@@ -62,10 +62,8 @@ async def axtar(update: Update, context: CallbackContext) -> None:
         video_id = search_youtube(query)
         await update.message.reply_text("Mahnı tapıldı! Yüklənir...")
         
-        # Audio yüklənir
         file_path = download_audio(video_id)
 
-        # Faylı Telegram vasitəsilə göndər
         with open(file_path, 'rb') as audio:
             await update.message.reply_audio(audio)
 
@@ -90,7 +88,7 @@ async def userbot_handler(client, message):
             await message.reply_text(f"Xəta baş verdi: {e}")
 
 # Bot və Userbot-u işlədən əsas funksiya
-def main():
+async def main():
     application = Application.builder().token(BOT_TOKEN).build()
 
     # Telegram bot komandaları
@@ -100,13 +98,8 @@ def main():
     # Zamanlanmış işlər
     scheduler = AsyncIOScheduler(timezone=pytz.timezone('Asia/Baku'))
 
-    # Paralel olaraq Telegram botu və Userbot-u işə sal
-    loop = asyncio.get_event_loop()
-    tasks = [
-        loop.create_task(application.run_polling()),
-        loop.create_task(userbot.start())
-    ]
-    loop.run_until_complete(asyncio.gather(*tasks))
+    # Bot və Userbot-u paralel işə salırıq
+    await asyncio.gather(application.run_polling(), userbot.start())
 
 if __name__ == '__main__':
-    main()
+    asyncio.run(main())
