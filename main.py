@@ -1,19 +1,13 @@
 from telegram import Update
-from telegram.ext import Application, CommandHandler, CallbackContext
+from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackContext
 from googleapiclient.discovery import build
 from yt_dlp import YoutubeDL
 import pytz
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from telethon import TelegramClient
 
 # API açarı və bot tokeni
 API_KEY = 'AIzaSyAtmngrhhfmWL4_KvY1wUg3q4BXtUpNHAQ'
 BOT_TOKEN = '5343918157:AAGbDSqpel-oOvthbkk-pWmu1gjgjKoTQJE'
-
-# Userbot üçün Telethon Client (String Session)
-USERBOT_API_ID = '17790748'
-USERBOT_API_HASH = '6a387b92b75add555b30eb0045582f0e'
-USERBOT_SESSION_STRING = '1AZWarzcBuxvBKhZqG9BycE2VUj3T4McWWipAhHscj7cbjAcTtRG2GUEfywh6MgiIT7SiJgL0SsQpr5Pzp1aS5vDUUr6TwC1wEWLq5wTfTioU6Jg-RMMOF1vpl0sXtq7qcDRdnnwz6QiZ1sXjcRefpav2MCIB40aJYYsob-u17ubfLrUYoJ-C6Wbd45WJ9_CZQdOyTGVWOQlFfAcCrgLq8hVj7isa2EdjwCHOcFYOXqBEqKT1H7zbCGLGnFUo76CdZLytgRIt-7ecSurhvHCksAEoKxLqUcSBGt64t0_-ZBJlOgf4DIGYih9l2CmQay0s-0kMLliOoYd6lhN0Ebo4gxi5NKDwIX4='  # String session
 
 # YouTube servisini qurmaq
 youtube = build('youtube', 'v3', developerKey=API_KEY)
@@ -81,17 +75,6 @@ def main():
 
     # Botu başladın
     application.run_polling()
-
-    # Userbotu işə salmaq
-    userbot = TelegramClient('userbot', USERBOT_API_ID, USERBOT_API_HASH)
-    userbot.session = USERBOT_SESSION_STRING  # String session ilə əlaqə qururuq
-
-    async def start_userbot():
-        await userbot.start()
-        print("Userbot işə düşdü!")
-
-    with userbot:
-        userbot.loop.run_until_complete(start_userbot())
 
 if __name__ == '__main__':
     main()
