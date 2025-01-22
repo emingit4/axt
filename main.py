@@ -5,7 +5,7 @@ from yt_dlp import YoutubeDL
 from pyrogram import Client
 import pytz
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-
+import asyncio
 # API açarı və bot tokeni
 API_KEY = 'AIzaSyAtmngrhhfmWL4_KvY1wUg3q4BXtUpNHAQ'
 BOT_TOKEN = '5343918157:AAGbDSqpel-oOvthbkk-pWmu1gjgjKoTQJE'
