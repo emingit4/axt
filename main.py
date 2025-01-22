@@ -88,6 +88,7 @@ async def axtar(update: Update, context: CallbackContext) -> None:
 # Telegram botunu işə sal
 async def main():
     application = Application.builder().token(BOT_TOKEN).build()
+    await application.initialize()
 
     # Komanda və mesaj emalçılar
     application.add_handler(CommandHandler("start", start))
