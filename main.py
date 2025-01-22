@@ -104,6 +104,7 @@ async def main():
     await application.updater.idle()
 
     await application.stop()
+    await application.shutdown()
 
 if __name__ == '__main__':
     try:
