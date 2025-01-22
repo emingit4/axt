@@ -6,6 +6,7 @@ from pyrogram import Client
 import pytz
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import asyncio
+
 # API açarı və bot tokeni
 API_KEY = 'AIzaSyAtmngrhhfmWL4_KvY1wUg3q4BXtUpNHAQ'
 BOT_TOKEN = '5343918157:AAGbDSqpel-oOvthbkk-pWmu1gjgjKoTQJE'
@@ -37,8 +38,8 @@ def search_youtube(query):
 def download_audio(video_id):
     video_url = f"https://www.youtube.com/watch?v={video_id}"
     ydl_opts = {
-        'format': 'bestaudio/best',
-        'outtmpl': '%(title)s.%(ext)s',
+        'format': 'bestaudio/best',  # Audio üçün ən yaxşı formatı seç
+        'outtmpl': 'downloads/%(id)s.%(ext)s',  # Yüklənmiş faylın adı və yolunu müəyyən et
     }
     with YoutubeDL(ydl_opts) as ydl:
         info_dict = ydl.extract_info(video_url, download=True)
@@ -60,8 +61,11 @@ async def axtar(update: Update, context: CallbackContext) -> None:
     try:
         video_id = search_youtube(query)
         await update.message.reply_text("Mahnı tapıldı! Yüklənir...")
+        
+        # Audio yüklənir
         file_path = download_audio(video_id)
 
+        # Faylı Telegram vasitəsilə göndər
         with open(file_path, 'rb') as audio:
             await update.message.reply_audio(audio)
 
