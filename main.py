@@ -2,6 +2,7 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, CallbackContext
 from googleapiclient.discovery import build
 from telethon.sync import TelegramClient, events
+from telethon.sessions import StringSession
 from yt_dlp import YoutubeDL
 import pytz
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -18,7 +19,7 @@ SESSION_STRING = '1AZWarzcBuxvBKhZqG9BycE2VUj3T4McWWipAhHscj7cbjAcTtRG2GUEfywh6M
 youtube = build('youtube', 'v3', developerKey=API_KEY)
 
 # Telegram userbot client oluştur
-client = TelegramClient('userbot', API_ID, API_HASH).start(session=SESSION_STRING)
+client = TelegramClient(StringSession(SESSION_STRING), API_ID, API_HASH)
 
 # YouTube axtarış funksiyası
 def search_youtube(query):
