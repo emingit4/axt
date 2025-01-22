@@ -7,6 +7,7 @@ from yt_dlp import YoutubeDL
 import pytz
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import os
+import asyncio
 
 # Telegram API bilgileri
 API_KEY = 'AIzaSyAtmngrhhfmWL4_KvY1wUg3q4BXtUpNHAQ'
