@@ -7,7 +7,6 @@ from googleapiclient.discovery import build
 from yt_dlp import YoutubeDL
 from pytgcalls import PyTgCalls
 from pytgcalls.types import MediaStream
-from pytgcalls import PyTgCalls
 import asyncio
 
 # Logging konfiqurasiya
@@ -78,8 +77,8 @@ async def axtar(update: Update, context: CallbackContext) -> None:
         chat_id = update.effective_chat.id
         await pytgcalls.join_group_call(
             chat_id,
-            InputStream(
-                RemoteFile(file_path)
+            MediaStream(
+                file_path
             )
         )
         await update.message.reply_text("Mahnı səsli söhbətdə səsləndirilir!")
@@ -99,6 +98,7 @@ async def main():
     # Botu başladın
     await application.initialize()
     await application.run_polling()
+    await application.shutdown()
 
 if __name__ == '__main__':
     try:
