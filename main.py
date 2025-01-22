@@ -98,7 +98,11 @@ async def main():
     # Botu başladın
     await application.initialize()
     await application.start()
+
+    # Tətbiqetmənin işini dayandırmaması üçün gözləyin
     await application.updater.start_polling()
+    await application.updater.idle()
+
     await application.stop()
 
 if __name__ == '__main__':
