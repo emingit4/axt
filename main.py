@@ -1,9 +1,7 @@
 from telegram import Update
 from telegram.ext import Application, CommandHandler, CallbackContext
-from googleapiclient.discovery import build
-from telethon.sync import TelegramClient, events
+from telethon.sync import TelegramClient
 from telethon.sessions import StringSession
-from yt_dlp import YoutubeDL
 import asyncio
 
 BOT_TOKEN = '5343918157:AAGbDSqpel-oOvthbkk-pWmu1gjgjKoTQJE'
@@ -32,8 +30,6 @@ async def axtar(update: Update, context: CallbackContext) -> None:
     except Exception as e:
         await update.message.reply_text(f"Xəta: {e}")
 
-import asyncio
-
 async def main():
     # Telegram botunun işlədilməsi
     application = Application.builder().token(BOT_TOKEN).build()
@@ -45,10 +41,10 @@ async def main():
 
     # Paralel olaraq bot və userbotu işə sal
     tasks = [
-        application.run_polling(),
+        application.run_polling(stop_signals=None),  # Signal idarəçiliyini bot özü həll edir
         client.run_until_disconnected(),
     ]
     await asyncio.gather(*tasks)
 
 if __name__ == "__main__":
-    application.run_polling()
+    asyncio.run(main())  # Asinxron funksiyanı işə salır
