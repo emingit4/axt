@@ -32,24 +32,25 @@ async def axtar(update: Update, context: CallbackContext) -> None:
     except Exception as e:
         await update.message.reply_text(f"Xəta: {e}")
 
-# Userbot üçün musiqi işləyicisi
-@client.on(events.NewMessage(pattern='/ses'))
-async def handle_ses(event):
-    await event.reply("Musiqi işlənir...")
+import asyncio
 
-# Əsas funksiya
 async def main():
-    # Telegram botu qur
+    # Telegram botunun işlədilməsi
     application = Application.builder().token(BOT_TOKEN).build()
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("axtar", axtar))
 
-    # Bot və Userbot paralel işləsin
-    await asyncio.gather(
-        application.run_polling(),
-        client.start()
-    )
+    # Userbotun işlədilməsi
+    await client.start()
 
-# Proqramı işə sal
+    # Paralel olaraq bot və userbotu işə sal
+    tasks = [
+        application.run_polling(),
+        client.run_until_disconnected(),
+    ]
+    await asyncio.gather(*tasks)
+
 if __name__ == '__main__':
-    asyncio.run(main())
+    # Mövcud döngədən istifadə et
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())
