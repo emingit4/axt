@@ -1,3 +1,5 @@
+import os
+import asyncio
 from telegram import Update
 from telegram.ext import Application, CommandHandler, CallbackContext
 from googleapiclient.discovery import build
@@ -6,9 +8,8 @@ from telethon.sessions import StringSession
 from yt_dlp import YoutubeDL
 import pytz
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-import os
 
-# Telegram API bilgileri
+# Telegram API məlumatları
 API_KEY = 'AIzaSyAtmngrhhfmWL4_KvY1wUg3q4BXtUpNHAQ'
 BOT_TOKEN = '5343918157:AAGbDSqpel-oOvthbkk-pWmu1gjgjKoTQJE'
 API_ID = '17790748'
@@ -18,7 +19,7 @@ SESSION_STRING = '1AZWarzcBuxvBKhZqG9BycE2VUj3T4McWWipAhHscj7cbjAcTtRG2GUEfywh6M
 # YouTube servisini qurmaq
 youtube = build('youtube', 'v3', developerKey=API_KEY)
 
-# Telegram userbot client oluştur
+# Telegram userbot üçün Telethon client yaradılması
 client = TelegramClient(StringSession(SESSION_STRING), API_ID, API_HASH)
 
 # YouTube axtarış funksiyası
@@ -32,7 +33,7 @@ def search_youtube(query):
     response = request.execute()
     return response['items'][0]['id']['videoId']
 
-# Userbot üçün musiqi yükləmə funksiyası
+# Mahnı yükləmə funksiyası
 def download_audio(video_url):
     ydl_opts = {
         'format': 'bestaudio/best',
@@ -42,31 +43,11 @@ def download_audio(video_url):
         info_dict = ydl.extract_info(video_url, download=True)
         return ydl.prepare_filename(info_dict)
 
-# Userbot komutlarını dinleyen event handler
-@client.on(events.NewMessage(pattern='/ses'))
-async def handle_ses(event):
-    # Mesajdaki linki al
-    message = event.message.message
-    url = message.split(' ')[1]
-
-    # Müziği indir
-    file_path = download_audio(url)
-
-    # Sesli sohbete katıl ve müziği çal
-    async with client:
-        await client.join_voice_call(event.chat_id)
-        voice_chat = client.voice_chat(event.chat_id)
-        await voice_chat.play(file_path)
-
-        # İşlem tamamlandığında sesli sohbetten ayrıl
-        os.remove(file_path)
-        await voice_chat.disconnect()
-
-# Start komandası
+# Telegram botu üçün start komandası
 async def start(update: Update, context: CallbackContext) -> None:
     await update.message.reply_text("Salam! Mahnı axtarmaq üçün '/axtar mahni adi' yazın.")
 
-# Mahnı axtarma komandası
+# Telegram botu üçün axtar komandası
 async def axtar(update: Update, context: CallbackContext) -> None:
     query = ' '.join(context.args)  # Komandadan sonra verilən sözləri alır
     if not query:
@@ -84,30 +65,49 @@ async def axtar(update: Update, context: CallbackContext) -> None:
     except Exception as e:
         await update.message.reply_text(f"Xəta baş verdi: {e}")
 
-# Telegram botunu işə sal
-def main():
+# Userbot üçün mesajları dinləyən handler
+@client.on(events.NewMessage(pattern='/ses'))
+async def handle_ses(event):
+    message = event.message.message
+    url = message.split(' ')[1]
+
+    # Mahnını yüklə
+    file_path = download_audio(url)
+
+    # Sesli sohbete katıl ve müziği çal
+    await client.join_voice_call(event.chat_id)
+    voice_chat = client.voice_chat(event.chat_id)
+    await voice_chat.play(file_path)
+
+    # İşlem tamamlandığında sesli sohbetten ayrıl
+    os.remove(file_path)
+    await voice_chat.disconnect()
+
+# Əsas funksiya
 async def main():
+    # Telegram botu yarat
     application = Application.builder().token(BOT_TOKEN).build()
 
-    # Komanda və mesaj emalçılar
+    # Komandalar əlavə et
     application.add_handler(CommandHandler("start", start))
-    application.add_handler(CommandHandler("axtar", axtar))  # /axtar komandasını əlavə et
+    application.add_handler(CommandHandler("axtar", axtar))
 
-    # Zamanlanmış işləri başlatmaq üçün `apscheduler` istifadə
+    # Zamanlayıcı işlərini başlat
     scheduler = AsyncIOScheduler(timezone=pytz.timezone('Asia/Baku'))
     scheduler.start()
 
-    # Botu başladın
-    application.run_polling()
-    await application.start()
-    await application.updater.start_polling()
-    await application.updater.idle()
+    # Telegram botu başladın
+    await application.run_polling()
 
 if __name__ == '__main__':
-    # Telegram botunu başlat
-    main()
-    # Userbot'u başlat
-    # Userbot'u başlatmak için asyncio olay döngüsünü kullan
+    # Həm Telegram botu, həm də userbotu paralel olaraq işə sal
     loop = asyncio.get_event_loop()
+
+    # Telegram botu işə salınır
     loop.create_task(main())
-    client.start()
+
+    # Userbotu işə salınır
+    loop.create_task(client.start())
+
+    # Loop-u işə salır
+    loop.run_forever()
