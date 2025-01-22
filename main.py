@@ -50,7 +50,5 @@ async def main():
     ]
     await asyncio.gather(*tasks)
 
-if __name__ == '__main__':
-    # Mövcud döngədən istifadə et
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+if __name__ == "__main__":
+    application.run_polling()
