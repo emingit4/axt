@@ -38,17 +38,17 @@ def download_audio(video_id):
     video_url = f"https://www.youtube.com/watch?v={video_id}"
     ydl_opts = {
         'format': 'bestaudio/best',
-        'outtmpl': '%(title)s.%(ext)s',  # Faylın adı və formatı
+        'outtmpl': '%(title)s.%(ext)s',
     }
     with YoutubeDL(ydl_opts) as ydl:
         info_dict = ydl.extract_info(video_url, download=True)
         return ydl.prepare_filename(info_dict)
 
-# Start komandası
+# Telegram bot komandası: /start
 async def start(update: Update, context: CallbackContext) -> None:
     await update.message.reply_text("Salam! Mahnı axtarmaq üçün '/axtar mahni adi' yazın.")
 
-# Mahnı axtarma komandası
+# Telegram bot komandası: /axtar
 async def axtar(update: Update, context: CallbackContext) -> None:
     query = ' '.join(context.args)
     if not query:
@@ -60,7 +60,6 @@ async def axtar(update: Update, context: CallbackContext) -> None:
     try:
         video_id = search_youtube(query)
         await update.message.reply_text("Mahnı tapıldı! Yüklənir...")
-
         file_path = download_audio(video_id)
 
         with open(file_path, 'rb') as audio:
@@ -86,22 +85,24 @@ async def userbot_handler(client, message):
         except Exception as e:
             await message.reply_text(f"Xəta baş verdi: {e}")
 
-# Bot və Userbot-u işə sal
+# Bot və Userbot-u işlədən əsas funksiya
 def main():
     application = Application.builder().token(BOT_TOKEN).build()
 
-    # Komanda emalçıları
+    # Telegram bot komandaları
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("axtar", axtar))
 
-    # Zamanlanmış işlər üçün `apscheduler`
+    # Zamanlanmış işlər
     scheduler = AsyncIOScheduler(timezone=pytz.timezone('Asia/Baku'))
 
-    # Telegram botunu işə sal
-    application.run_polling()
-
-    # Userbot-u işə sal
-    userbot.run()
+    # Paralel olaraq Telegram botu və Userbot-u işə sal
+    loop = asyncio.get_event_loop()
+    tasks = [
+        loop.create_task(application.run_polling()),
+        loop.create_task(userbot.start())
+    ]
+    loop.run_until_complete(asyncio.gather(*tasks))
 
 if __name__ == '__main__':
     main()
