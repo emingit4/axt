@@ -102,10 +102,10 @@ async def main():
     # Botu çalıştırın
     await application.start()
     await application.run_polling()
+    await application.stop()
 
 if __name__ == '__main__':
     # Userbot'u başlatmak için asyncio olay döngüsünü kullan
-    loop = asyncio.get_event_loop()
-    loop.create_task(main())
+    asyncio.run(main())
     client.start()
     client.run_until_disconnected()
