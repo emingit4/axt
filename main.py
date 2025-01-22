@@ -13,7 +13,7 @@ SESSION_STRING = "1AZWarzcBuxvBKhZqG9BycE2VUj3T4McWWipAhHscj7cbjAcTtRG2GUEfywh6M
 API_ID = 17790748  # Telegram API ID (my.telegram.org-dan alınır)
 API_HASH = "6a387b92b75add555b30eb0045582f0e"  # Telegram API HASH (my.telegram.org-dan alınır)
 
-# YouTube servisini qurmaq
+# YouTube servisini qur
 youtube = build('youtube', 'v3', developerKey=API_KEY)
 
 # Userbot-u qur
@@ -28,7 +28,10 @@ def search_youtube(query):
         maxResults=1
     )
     response = request.execute()
-    return response['items'][0]['id']['videoId']
+    if response['items']:
+        return response['items'][0]['id']['videoId']
+    else:
+        raise Exception("Mahnı tapılmadı.")
 
 # Audio yükləmə funksiyası
 def download_audio(video_id):
@@ -47,7 +50,7 @@ async def start(update: Update, context: CallbackContext) -> None:
 
 # Mahnı axtarma komandası
 async def axtar(update: Update, context: CallbackContext) -> None:
-    query = ' '.join(context.args)  # Komandadan sonra verilən sözləri alır
+    query = ' '.join(context.args)
     if not query:
         await update.message.reply_text("Xahiş edirəm mahnı adını daxil edin.")
         return
@@ -55,29 +58,26 @@ async def axtar(update: Update, context: CallbackContext) -> None:
     await update.message.reply_text(f"Mahnı '{query}' axtarılır...")
 
     try:
-        # YouTube-da mahnını tap
         video_id = search_youtube(query)
         await update.message.reply_text("Mahnı tapıldı! Yüklənir...")
 
-        # Mahnını yüklə
         file_path = download_audio(video_id)
 
-        # Faylı istifadəçiyə göndər
         with open(file_path, 'rb') as audio:
             await update.message.reply_audio(audio)
 
     except Exception as e:
         await update.message.reply_text(f"Xəta baş verdi: {e}")
 
-# Userbot-dan mesaj göndərmə funksiyası
+# Userbot mesaj idarəetməsi
 @userbot.on_message()
-async def handle_userbot_message(client, message):
+async def userbot_handler(client, message):
     if "/axtar" in message.text:
         query = message.text.replace("/axtar", "").strip()
         if not query:
             await message.reply_text("Xahiş edirəm mahnı adını daxil edin.")
             return
-        
+
         try:
             video_id = search_youtube(query)
             await message.reply_text("Mahnı tapıldı! Yüklənir...")
@@ -86,21 +86,21 @@ async def handle_userbot_message(client, message):
         except Exception as e:
             await message.reply_text(f"Xəta baş verdi: {e}")
 
-# Botu işə sal
+# Bot və Userbot-u işə sal
 def main():
     application = Application.builder().token(BOT_TOKEN).build()
 
-    # Komanda və mesaj emalçılar
+    # Komanda emalçıları
     application.add_handler(CommandHandler("start", start))
-    application.add_handler(CommandHandler("axtar", axtar))  # /axtar komandasını əlavə et
+    application.add_handler(CommandHandler("axtar", axtar))
 
-    # Zamanlanmış işləri başlatmaq üçün `apscheduler` istifadə
+    # Zamanlanmış işlər üçün `apscheduler`
     scheduler = AsyncIOScheduler(timezone=pytz.timezone('Asia/Baku'))
 
-    # Botu başladın
+    # Telegram botunu işə sal
     application.run_polling()
 
-    # Userbot-u başladın
+    # Userbot-u işə sal
     userbot.run()
 
 if __name__ == '__main__':
