@@ -106,6 +106,9 @@ async def main():
 
 if __name__ == '__main__':
     # Userbot'u başlatmak için asyncio olay döngüsünü kullan
-    asyncio.run(main())
-    client.start()
-    client.run_until_disconnected()
+    async def run():
+        await main()
+        client.start()
+        await client.run_until_disconnected()
+
+    asyncio.run(run())
