@@ -41,4 +41,15 @@ async def handle_ses(event):
 async def main():
     # Telegram botu qur
     application = Application.builder().token(BOT_TOKEN).build()
-    application.add_handler(Command
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(CommandHandler("axtar", axtar))
+
+    # Bot və Userbot paralel işləsin
+    await asyncio.gather(
+        application.run_polling(),
+        client.start()
+    )
+
+# Proqramı işə sal
+if __name__ == '__main__':
+    asyncio.run(main())
