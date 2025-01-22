@@ -85,7 +85,7 @@ async def axtar(update: Update, context: CallbackContext) -> None:
         await update.message.reply_text(f"Xəta baş verdi: {e}")
 
 # Telegram botunu işə sal
-def main():
+async def main():
     application = Application.builder().token(BOT_TOKEN).build()
 
     # Komanda və mesaj emalçılar
@@ -94,12 +94,16 @@ def main():
 
     # Zamanlanmış işləri başlatmaq üçün `apscheduler` istifadə
     scheduler = AsyncIOScheduler(timezone=pytz.timezone('Asia/Baku'))
+    scheduler.start()
 
     # Botu başladın
-    application.run_polling()
+    await application.start()
+    await application.updater.start_polling()
+    await application.updater.idle()
 
 if __name__ == '__main__':
-    # Telegram botunu başlat
-    main()
-    # Userbot'u başlat
+    # Userbot'u başlatmak için asyncio olay döngüsünü kullan
+    loop = asyncio.get_event_loop()
+    loop.create_task(main())
+    client.start()
     client.run_until_disconnected()
