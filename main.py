@@ -2,7 +2,6 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, CallbackContext
 from yt_dlp import YoutubeDL
 from pytgcalls import PyTgCalls, idle
-from pytgcalls.types import InputAudioStream
 from telethon import TelegramClient
 from pytgcalls.types import MediaStream
 
@@ -51,7 +50,7 @@ async def qosul(update: Update, context: CallbackContext) -> None:
     await client.start(bot_token=BOT_TOKEN)
     call = PyTgCalls(client)
     await call.start()
-    await call.join_group_call(update.message.chat_id, InputAudioStream('silence.mp3'))  # Boş bir audio faylı çalır
+    await call.join_group_call(update.message.chat_id, MediaStream('silence.mp3'))  # Boş bir audio faylı çalır
     await idle()
 
 # Mahnı oxuma komandası
