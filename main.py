@@ -1,3 +1,4 @@
+import os
 from telegram import Update
 from telegram.ext import Application, CommandHandler, CallbackContext
 from yt_dlp import YoutubeDL
@@ -67,6 +68,11 @@ async def oxu(update: Update, context: CallbackContext) -> None:
         await update.message.reply_text("Mahnı tapıldı! Yüklənir...")
 
         file_path = download_audio(video_url)  # Mahnını yüklə
+
+        # Faylın yüklənib-yüklənmədiyini yoxlayın
+        if not os.path.exists(file_path):
+            await update.message.reply_text("Mahnı yüklənmədi. Xahiş edirəm yenidən cəhd edin.")
+            return
 
         await update.message.reply_text("Mahnı yükləndi! Səsli söhbətdə oxunur...")
 
