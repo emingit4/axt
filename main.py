@@ -4,7 +4,7 @@ from yt_dlp import YoutubeDL
 from pytgcalls import PyTgCalls, idle
 from pytgcalls.types import InputAudioStream
 from telethon import TelegramClient
-from pytgcalls.types.input_stream import InputAudioStream
+from pytgcalls.types import MediaStream
 
 # Telegram bot tokeni və API məlumatları
 BOT_TOKEN = '5343918157:AAGbDSqpel-oOvthbkk-pWmu1gjgjKoTQJE'
