@@ -79,7 +79,7 @@ async def oxu(update: Update, context: CallbackContext) -> None:
             await client.disconnect()
 
         await call.start()
-        await call.join_group_call(update.message.chat_id, InputAudioStream(file_path))
+        await call.join_group_call(update.message.chat_id, MediaStream(file_path))
         await idle()
 
     except Exception as e:
